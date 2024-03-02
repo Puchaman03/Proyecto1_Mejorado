@@ -39,6 +39,7 @@ while (op <= 6) // con este while hare funcionar el menu, hasta que el usuario p
             break;
 
         case 2://incluir estudiantes
+            Console.ForegroundColor = ConsoleColor.Green;
             do
             {
                 Incluir_Estudiantes(ref CantidadEstudiantes, Cedulas, Nombres, promedio, Condicion, NoError);
@@ -73,7 +74,9 @@ while (op <= 6) // con este while hare funcionar el menu, hasta que el usuario p
 
 
         case 3: // Consultar Estudiantes
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
             Console.WriteLine("Digite la cedula del estudiante que desea consultar: ");
+
             string cedulaConsulta = Console.ReadLine();
 
             bool estudianteEncontrado = false;
@@ -97,6 +100,7 @@ while (op <= 6) // con este while hare funcionar el menu, hasta que el usuario p
                 Console.WriteLine($"La Cedula {cedulaConsulta} no está registrada.");
             }
             break;
+            
 
 
         case 4:// Modificar estudiantes 
