@@ -378,49 +378,86 @@ Porfavor no poner numeros negativos o ivalidos
 }
 static void Incluir_Estudiantes(ref int CantidadEstudiantes, string[] Cedulas, string[] Nombres, float[] promedio, string[] Condicion, bool NoError)
 {
-
     Console.WriteLine($"Ponga la cedula del estudiante {CantidadEstudiantes + 1}: ");
-    Cedulas[CantidadEstudiantes] = Console.ReadLine();
-    Console.WriteLine("Ponga el nombre del estudiante: ");
-    Nombres[CantidadEstudiantes] = Console.ReadLine();
-    Console.WriteLine("Ponga el Promedio del estudiante: ");
-    do
+    string cedula = "";
+    bool CedulaValida = false;
+    while (!CedulaValida)
     {
-        try
+        try // se utiliza el try catch para detectar posibles errores al igresar los datos
         {
-            while (NoError == false)
-            {
-                promedio[CantidadEstudiantes] = float.Parse(Console.ReadLine());
-
-                while (promedio[CantidadEstudiantes] > 100 || promedio[CantidadEstudiantes] < 0)
-                {
-                    Console.WriteLine("El promedio no puede ser menor a 0 o mayor a 100, Digite el promedio del estudiante");
-                    promedio[CantidadEstudiantes] = float.Parse(Console.ReadLine());
-
-                }
-                NoError = true;
-
-            }
-
-
+            cedula = Console.ReadLine();
+            // se usa el .parse para covertir a numeros
+            int.Parse(cedula);
+            // mediante el booleano damos la confirmacion para salir del while
+            CedulaValida = true;
         }
         catch (FormatException)
         {
-            Console.WriteLine(" Error, digite nuevamente el promedio del estudiante");
+            Console.WriteLine("Ingrese solo números para la cédula");
         }
-    } while (!NoError);// mientras el bool NoError sea falso va seguier repitiendo la estrutura 
+    }
 
+    Cedulas[CantidadEstudiantes] = cedula;
+
+    Console.WriteLine("Ponga el nombre del estudiante: ");
+    string nombre = "";
+    bool nombreValido = false;
+    while (!nombreValido)
+    {
+        try
+        {
+            nombre = Console.ReadLine();
+            if (nombre.All(char.IsLetter))
+                nombreValido = true;
+            else
+                throw new FormatException();
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("Ingrese solo letras para el nombre");
+        }
+    }
+
+    Nombres[CantidadEstudiantes] = nombre;
+
+    // Validación del promedio
+    Console.WriteLine("Ponga el Promedio del estudiante: ");
+    bool promedioValido = false;
+    while (!promedioValido)
+    {
+        try
+        {
+            float promedioIngresado = float.Parse(Console.ReadLine());
+            if (promedioIngresado >= 0 && promedioIngresado <= 100)
+            {
+                promedio[CantidadEstudiantes] = promedioIngresado;
+                promedioValido = true;
+            }
+            else
+            {
+                Console.WriteLine("El promedio debe estar entre 0 y 100. ingrese el promedio del estudiante");
+            }
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("Por favor, ingrese un numero válido para el promedio.");
+        }
+    }
+
+    // se determina la condicion del estudiante
     if (promedio[CantidadEstudiantes] >= 70)
     {
         Condicion[CantidadEstudiantes] = "Aprobado";
+    }
+    else if (promedio[CantidadEstudiantes] >= 60 && promedio[CantidadEstudiantes] < 70)
+    {
+        Condicion[CantidadEstudiantes] = "Aplazado";
     }
     else
     {
         Condicion[CantidadEstudiantes] = "Reprobado";
     }
+
     Console.WriteLine();
-
-
     CantidadEstudiantes++;
-
 }
